@@ -17,3 +17,7 @@ myresult = mycursor.fetchall()
 
 for x in myresult:
   print(x)
+
+
+# INSERT INTO `markers` (`marker_id`, `marker_name`, `marker_category_id`, `latitude`, `longitude`)
+# VALUES (NULL, 'Lodowka Spoleczna Bujwida', '2', '51.11864559716737', '17.068446189474464');
