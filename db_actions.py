@@ -1,5 +1,8 @@
 # install mysql-connector-python==8.0.29
 import mysql.connector
+from class_marker import Marker
+from class_user import User
+from class_marker_category import MarkerCategory
 from PIL import Image
 
 
@@ -19,7 +22,20 @@ def run_sql_query(connection, query: str) -> list:
     return myresult
 
 
+def run_sql_insert(connection, query: str) -> list:
+    mycursor = connection.cursor()
+    mycursor.execute(query)
+    connection.commit()
+    return mycursor.lastrowid
+
+
 def get_markers(user_id=None, categories_id: list = None) -> list:
+    """
+    Function to get filtered/all markers from DB
+    :param user_id: int used to filter per user
+    :param categories_id: list of int numbers used to filter per categories
+    :return: list of Marker objects
+    """
     query = "SELECT * FROM markers"
     if user_id:
         query += " WHERE user_id = {0}".format(user_id)
@@ -32,34 +48,37 @@ def get_markers(user_id=None, categories_id: list = None) -> list:
             query += str(category_id) + ","
         query = query[:-1] + ")"
     result_tuples_list = run_sql_query(db_connect(), query)
-    result_dicts_list = []
+    markers_list = []
     for marker_tuple in result_tuples_list:
-        marker_dict = {'user': get_user_details(marker_tuple[1]),
-                       'marker_name': marker_tuple[2],
-                       'description': marker_tuple[3],
-                       'category_id': marker_tuple[4],
-                       'photo': None,
-                       'latitude': marker_tuple[5],
-                       'longitude': marker_tuple[6]}
-        result_dicts_list.append(marker_dict)
-    return result_dicts_list
+        marker = Marker(marker_id=marker_tuple[0], marker_name=marker_tuple[2], description=marker_tuple[3],
+                        category_id=marker_tuple[4], photo=None, latitude=marker_tuple[5], longitude=marker_tuple[6],
+                        user=get_user(marker_tuple[1]))
+        markers_list.append(marker)
+    return markers_list
 
 
-def get_user_details(user_id: int) -> tuple:
+def get_user_tuple(user_id: int) -> tuple:
     query = "SELECT * FROM users WHERE user_id = {0}".format(user_id)
-    user = run_sql_query(db_connect(), query)
-    username = user[0][1]
-    return (user_id, username)
+    return run_sql_query(db_connect(), query)[0]
 
 
-def get_category_details(category_id: int) -> dict:
+def get_user(user_id: int) -> User:
+    user_tuple = get_user_tuple(user_id)
+    user = User(user_id=user_id, username=user_tuple[1])
+    return user
+
+
+def get_category_tuple(category_id: int) -> dict:
     query = "SELECT * FROM marker_category WHERE category_id = {0}".format(category_id)
-    category_details_tuple = run_sql_query(db_connect(), query)[0]
-    category_details_dict = {'name': category_details_tuple[1],
-                             'description': category_details_tuple[2],
-                             'colour': category_details_tuple[3],
-                             'icon': category_details_tuple[4]}
-    return category_details_dict
+    return run_sql_query(db_connect(), query)[0]
+
+
+def get_category(category_id: int) -> MarkerCategory:
+    category_details_tuple = get_category_tuple(category_id)
+    category = MarkerCategory(category_id=category_id, name=category_details_tuple[1],
+                              colour=category_details_tuple[3], description=category_details_tuple[2],
+                              icon=category_details_tuple[4])
+    return category
 
 
 def get_password_for_user(user: str):
@@ -72,45 +91,52 @@ def get_password_for_user(user: str):
     password = run_sql_query(db_connect(), query)
     if password:
         return password[0][0]
-        #add user_id to result
+        # add user_id to result
     else:
         return None
 
 
 def add_user_to_db(username, email, password):
-    #check if username already exists
+    # check if username already exists
     pass
 
 
-def add_marker_to_db(marker: dict):
+def add_marker_to_db(marker):
+    new_marker_id = None
     sql_command = "INSERT INTO `markers` " \
-    "(`marker_id`, `user_id`, `marker_name`, `description`, `marker_category_id`, `latitude`, `longitude`) " \
-    "VALUES " \
-    "(NULL, '{0}', '{1}', '{2}', '{3}', '{4}', '{5}');".format(
-        marker['user'][0],
-        marker['marker_name'],
-        marker['description'],
-        marker['category_id'],
-        marker['latitude'],
-        marker['longitude'])
+                  "(`marker_id`, `user_id`, `marker_name`, `description`, `marker_category_id`, `latitude`, `longitude`) " \
+                  "VALUES " \
+                  "(NULL, '{0}', '{1}', '{2}', '{3}', '{4}', '{5}');".format(
+        marker.user_id,
+        marker.marker_name,
+        marker.description,
+        marker.category_id,
+        marker.latitude,
+        marker.longitude)
     try:
         mydb = db_connect()
-        run_sql_query(mydb, sql_command)
-        mydb.commit()
+        new_marker_id = run_sql_insert(mydb, sql_command)
     except Exception as e:
-        print('Issue when adding marker: {0} to DB: {1}'.format(marker_dict, e))
+        print('Issue when adding marker: {0} to DB: {1}'.format(marker.marker_name, e))
         pass
     # add photo
+    return new_marker_id
+
+
+def edit_marker_in_db(marker: Marker):
     pass
 
-def edit_marker_in_db(marker):
+
+def remove_marker_from_db(marker: Marker):
     pass
 
-marker_dict = {'user': (2, 'patrykp'), 'marker_name': 'Telewizor', 'description': 'Nowy, nieuzywany',
-               'category_id': 3, 'photo': None, 'latitude': 51.1265, 'longitude': 17.1689}
+
+test_user = User(user_id=3, username='kubam')
+test_marker = Marker(marker_name='Laptop DELL', description='2 letni laptop',
+                     category_id=3, photo=None, latitude=51.1266, longitude=17.1689,
+                     user=test_user)
 
 # for marker in get_markers():
 #     print(marker)
 
-add_marker_to_db(marker_dict)
-
+# print(add_marker_to_db(test_marker))
