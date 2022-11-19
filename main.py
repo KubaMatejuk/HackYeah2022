@@ -1,8 +1,6 @@
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
-from kivy.animation import Animation
-from kivy.properties import StringProperty, ObjectProperty, ListProperty, NumericProperty
-from kivy.clock import Clock
-from kivy.lang.builder import Builder
+from kivy.properties import ObjectProperty
+from db_actions import get_password_for_user
 
 from kivymd.app import MDApp
 
@@ -20,7 +18,9 @@ class WasteOverLogInScreen(Screen):
     def login(self, **kwargs):
         password = self.ids.password.text
         email = self.ids.email.text
-        self.manager.current = 'mainMenu'
+        actual_password = get_password_for_user(email)
+        if password == actual_password:
+            self.manager.current = 'mainMenu'
 
 
 class WasteOverApp(MDApp):
