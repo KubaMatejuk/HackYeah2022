@@ -1,5 +1,6 @@
 # install mysql-connector-python==8.0.29
 import mysql.connector
+from PIL import Image
 
 
 def db_connect():
@@ -33,7 +34,7 @@ def get_markers(user_id=None, categories_id: list = None) -> list:
     result_tuples_list = run_sql_query(db_connect(), query)
     result_dicts_list = []
     for marker_tuple in result_tuples_list:
-        marker_dict = {'username': get_username(marker_tuple[1]),
+        marker_dict = {'user': get_user_details(marker_tuple[1]),
                        'marker_name': marker_tuple[2],
                        'description': marker_tuple[3],
                        'category_id': marker_tuple[4],
@@ -44,10 +45,11 @@ def get_markers(user_id=None, categories_id: list = None) -> list:
     return result_dicts_list
 
 
-def get_username(user_id: int) -> str:
-    query = "SELECT username FROM users WHERE user_id = {0}".format(user_id)
-    username = run_sql_query(db_connect(), query)
-    return username[0][0]
+def get_user_details(user_id: int) -> tuple:
+    query = "SELECT * FROM users WHERE user_id = {0}".format(user_id)
+    user = run_sql_query(db_connect(), query)
+    username = user[0][1]
+    return (user_id, username)
 
 
 def get_category_details(category_id: int) -> dict:
@@ -70,25 +72,45 @@ def get_password_for_user(user: str):
     password = run_sql_query(db_connect(), query)
     if password:
         return password[0][0]
+        #add user_id to result
     else:
         return None
 
 
-def add_user_to_db():
+def add_user_to_db(username, email, password):
+    #check if username already exists
     pass
 
 
-def add_marker_to_db():
+def add_marker_to_db(marker: dict):
+    sql_command = "INSERT INTO `markers` " \
+    "(`marker_id`, `user_id`, `marker_name`, `description`, `marker_category_id`, `latitude`, `longitude`) " \
+    "VALUES " \
+    "(NULL, '{0}', '{1}', '{2}', '{3}', '{4}', '{5}');".format(
+        marker['user'][0],
+        marker['marker_name'],
+        marker['description'],
+        marker['category_id'],
+        marker['latitude'],
+        marker['longitude'])
+    try:
+        mydb = db_connect()
+        run_sql_query(mydb, sql_command)
+        mydb.commit()
+    except Exception as e:
+        print('Issue when adding marker: {0} to DB: {1}'.format(marker_dict, e))
+        pass
     # add photo
     pass
 
+def edit_marker_in_db(marker):
+    pass
 
-print(get_password_for_user('jmatejuk@gmail.com'))
+marker_dict = {'user': (2, 'patrykp'), 'marker_name': 'Telewizor', 'description': 'Nowy, nieuzywany',
+               'category_id': 3, 'photo': None, 'latitude': 51.1265, 'longitude': 17.1689}
 
-# SELECT * FROM `markers` WHERE `marker_category_id` IN (1)
+# for marker in get_markers():
+#     print(marker)
 
-# for x in run_sql_query(db_connect(), "SELECT * FROM markers"):
-#     print(x)
+add_marker_to_db(marker_dict)
 
-# INSERT INTO `markers` (`marker_id`, `marker_name`, `marker_category_id`, `latitude`, `longitude`)
-# VALUES (NULL, 'Lodowka Spoleczna Bujwida', '2', '51.11864559716737', '17.068446189474464');
