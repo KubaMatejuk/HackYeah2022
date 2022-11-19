@@ -103,6 +103,19 @@ def add_marker_to_db(marker):
 
 
 def edit_marker_in_db(marker: Marker):
+    if marker.id:
+        sql_command = "UPDATE `markers` SET " \
+                "`marker_name` = '{0}', `description` = '{1}', `marker_category_id` = '{2}' " \
+                "WHERE `markers`.`marker_id` = {3};".format(marker.marker_name, marker.description, marker.category_id,
+                                                            marker.id)
+        try:
+            mydb = db_connect()
+            run_sql_insert(mydb, sql_command)
+        except Exception as e:
+            print('Issue when editing marker: marker ID: {0} | Error: {1}'.format(marker.id, e))
+            pass
+    else:
+        raise Exception("Missing Marker ID")
     pass
 
 
@@ -111,9 +124,15 @@ def remove_marker_from_db(marker: Marker):
 
 
 test_user = User(user_id=3, username='kubam')
-test_marker = Marker(marker_name='Laptop DELL', description='2 letni laptop',
-                     category_id=3, photo=None, latitude=51.1266, longitude=17.1689,
+test_marker = Marker(marker_name='Laptop Apple', description='2 letni laptop',
+                     category_id=3, photo=None, latitude=51.1270, longitude=17.1669,
                      user=test_user)
+
+test_marker2 = Marker(marker_id=19, marker_name='Laptop Apple', description='Roczny laptop',
+                     category_id=3, photo=None, latitude=51.1270, longitude=17.1669,
+                     user=test_user)
+
+edit_marker_in_db(test_marker2)
 
 # for marker in get_markers():
 #     print(marker)
