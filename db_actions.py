@@ -60,8 +60,18 @@ def get_category_details(category_id: int) -> dict:
     return category_details_dict
 
 
-def get_password_for_user(user):
-    pass
+def get_password_for_user(user: str):
+    """
+    Function that will return password basing on user string
+    :param user: string that will contain username or email
+    :return: password: string with password for given user
+    """
+    query = r"SELECT password FROM users WHERE username = '{0}' OR email = '{0}'".format(user)
+    password = run_sql_query(db_connect(), query)
+    if password:
+        return password[0][0]
+    else:
+        return None
 
 
 def add_user_to_db():
@@ -73,10 +83,7 @@ def add_marker_to_db():
     pass
 
 
-for x in get_markers():
-    print(x)
-
-print(get_category_details(1))
+print(get_password_for_user('jmatejuk@gmail.com'))
 
 # SELECT * FROM `markers` WHERE `marker_category_id` IN (1)
 
