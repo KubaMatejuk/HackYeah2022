@@ -50,7 +50,7 @@ def add_new_marker(map_object, marker_obj):
         raise Exception('Adding new marker failed')
 
 def remove_marker(marker_object):
-    remove_marker_from_db(marker_object)
+    remove_marker_from_db(marker_object.id)
     # generate refreshed map
     load_markers()
 

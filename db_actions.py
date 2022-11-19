@@ -13,16 +13,16 @@ def db_connect():
     return mydb
 
 
-def run_sql_query(connection, query: str) -> list:
+def run_sql_select(connection, query: str) -> list:
     mycursor = connection.cursor()
     mycursor.execute(query)
     myresult = mycursor.fetchall()
     return myresult
 
 
-def run_sql_insert(connection, query: str) -> list:
+def run_sql_command(connection, query: str) -> list:
     mycursor = connection.cursor()
-    mycursor.execute(query)
+    tesr = mycursor.execute(query)
     connection.commit()
     return mycursor.lastrowid
 
@@ -45,19 +45,19 @@ def get_markers_tuple(user_id=None, categories_id: list = None) -> list:
         for category_id in categories_id:
             query += str(category_id) + ","
         query = query[:-1] + ")"
-    result_tuples_list = run_sql_query(db_connect(), query)
+    result_tuples_list = run_sql_select(db_connect(), query)
 
     return result_tuples_list
 
 
 def get_user_tuple(user_id: int) -> tuple:
     query = "SELECT * FROM users WHERE user_id = {0}".format(user_id)
-    return run_sql_query(db_connect(), query)[0]
+    return run_sql_select(db_connect(), query)[0]
 
 
 def get_category_tuple(category_id: int) -> dict:
     query = "SELECT * FROM marker_category WHERE category_id = {0}".format(category_id)
-    return run_sql_query(db_connect(), query)[0]
+    return run_sql_select(db_connect(), query)[0]
 
 
 def get_password_for_user(user: str):
@@ -67,7 +67,7 @@ def get_password_for_user(user: str):
     :return: password: string with password for given user
     """
     query = r"SELECT password FROM users WHERE username = '{0}' OR email = '{0}'".format(user)
-    password = run_sql_query(db_connect(), query)
+    password = run_sql_select(db_connect(), query)
     if password:
         return password[0][0]
         # add user_id to result
@@ -76,7 +76,33 @@ def get_password_for_user(user: str):
 
 
 def add_user_to_db(username, email, password):
-    # check if username already exists
+    if get_password_for_user(username) or get_password_for_user(email):
+        print("Username or mail already exist")
+        return None
+
+    new_user_id = None
+    sql_command = "INSERT INTO `users` " \
+                  "(`user_id`, `username`, `password`, `email`) " \
+                  "VALUES " \
+                  "(NULL, '{0}', '{1}', '{2}');".format(
+        username, password, email)
+    try:
+        mydb = db_connect()
+        new_user_id = run_sql_command(mydb, sql_command)
+    except Exception as e:
+        print('Issue when adding user: {0} to DB: {1}'.format(username, e))
+        pass
+    # add photo
+    return new_user_id
+
+def remove_user_from_db(user_id):
+    sql_command = "DELETE FROM `users` WHERE `users`.`user_id` = {0}".format(user_id)
+    try:
+        mydb = db_connect()
+        run_sql_command(mydb, sql_command)
+    except Exception as e:
+        print('Issue when removing user: user ID: {0} | Error: {1}'.format(user_id, e))
+        pass
     pass
 
 
@@ -94,7 +120,7 @@ def add_marker_to_db(marker):
         marker.longitude)
     try:
         mydb = db_connect()
-        new_marker_id = run_sql_insert(mydb, sql_command)
+        new_marker_id = run_sql_command(mydb, sql_command)
     except Exception as e:
         print('Issue when adding marker: {0} to DB: {1}'.format(marker.marker_name, e))
         pass
@@ -110,21 +136,29 @@ def edit_marker_in_db(marker: Marker):
                                                             marker.id)
         try:
             mydb = db_connect()
-            run_sql_insert(mydb, sql_command)
+            run_sql_command(mydb, sql_command)
         except Exception as e:
             print('Issue when editing marker: marker ID: {0} | Error: {1}'.format(marker.id, e))
             pass
     else:
-        raise Exception("Missing Marker ID")
+        print("Missing Marker ID")
+        # raise Exception("Missing Marker ID")
     pass
 
 
-def remove_marker_from_db(marker: Marker):
+def remove_marker_from_db(marker_id: int):
+    sql_command = "DELETE FROM `markers` WHERE `markers`.`marker_id` = {0}".format(marker_id)
+    try:
+        mydb = db_connect()
+        run_sql_command(mydb, sql_command)
+    except Exception as e:
+        print('Issue when removing marker: marker ID: {0} | Error: {1}'.format(marker_id, e))
+        pass
     pass
 
 
 test_user = User(user_id=3, username='kubam')
-test_marker = Marker(marker_name='Laptop Apple', description='2 letni laptop',
+test_marker = Marker(marker_name='Laptop Applfsdfsfsffsdfe', description='2 letni laptop',
                      category_id=3, photo=None, latitude=51.1270, longitude=17.1669,
                      user=test_user)
 
@@ -132,7 +166,10 @@ test_marker2 = Marker(marker_id=19, marker_name='Laptop Apple', description='Roc
                      category_id=3, photo=None, latitude=51.1270, longitude=17.1669,
                      user=test_user)
 
-edit_marker_in_db(test_marker2)
+# edit_marker_in_db(test_marker2)
+
+# print(add_marker_to_db(test_marker))
+remove_marker_from_db(20)
 
 # for marker in get_markers():
 #     print(marker)
