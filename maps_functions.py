@@ -1,6 +1,8 @@
 import folium
 import webbrowser
-from db_actions import get_markers, get_category, add_marker_to_db, edit_marker_in_db, remove_marker_from_db
+from db_actions import add_marker_to_db, edit_marker_in_db, remove_marker_from_db
+from object_handler import get_category, get_markers
+
 
 def create_map(center_point=(51.1102, 17.0350), zoom_start=12, width=800, height=600):
     map_object = folium.Map(location=center_point, zoom_start=zoom_start, width=width, height=height)
