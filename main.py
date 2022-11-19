@@ -9,15 +9,29 @@ class WindowManager(ScreenManager):
     screen_login = ObjectProperty(None)
     screen_mainmenu = ObjectProperty(None)
     screen_map = ObjectProperty(None)
+    screen_bar = ObjectProperty(None)
+    screen_secondlife = ObjectProperty(None)
 
 
 class WasteOverMenu(Screen):
     def open_maps(self):
         self.manager.current = 'mapScreen'
 
+    def open_bars(self):
+        self.manager.current = 'barScreen'
+
+    def open_second_life(self):
+        self.manager.current = 'secondLifeScreen'
+
 
 class WasteOverMap(Screen):
     map = ObjectProperty(None)
+
+class WasteOverBarReader(Screen):
+    bat = ObjectProperty(None)
+
+class WasteOverSecondLife(Screen):
+    second_life = ObjectProperty(None)
 
 
 class WasteOverLogInScreen(Screen):
