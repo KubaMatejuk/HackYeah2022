@@ -24,18 +24,39 @@
                 pos: [0,0]
                 size: 2*self.width, 2*self.height
                 texture: Gradient.horizontal(get_color_from_hex("FFD700"), get_color_from_hex("39CE00"))
-        Label:
-            text: 'Waste Over'
-            bold: True
-            font_size: '50sp'
-            size_hint_y: None
-            height: '100dp'
+        AnchorLayout:
+            padding: ['100dp', 0, 0, 0]
+            MDLabel:
+                id: end_text
+                top: root.top - 50
+                valign: 'middle'
+                text: 'Waste Over'
+                bold: True
+                font_name: 'game_over'
+                font_size: '90sp'
+                size_hint: None, None
+                height: '100dp'
+                width: '320dp'
+                opacity: 0
+            MDLabel:
+                id: start_text
+                top: root.top - 50
+                valign: 'middle'
+                text: 'Game Over?'
+                bold: True
+                font_name: 'game_over'
+                font_size: '90sp'
+                size_hint: None, None
+                height: '100dp'
+                width: '320dp'
+                opacity: 1
         TextInput:
             id: email
             hint_text: 'Email/Username'
+            size_hint:(1, None)
             valign: 'center'
             text_size: root.width, root.height
-            height: '60dp'
+            height: '30dp'
             background_color: .4, .4, .4, .5
             cursor_color: 1, 1, 1, 1
             foreground_color: 1, 1, 1, 1
@@ -43,14 +64,17 @@
             use_bubble: True
             font_size: '16sp'
             multiline: False
+            write_tab: False
             bold: 1
+            on_text_validate: root.login()
         TextInput:
             id: password
             hint_text: 'Password'
+            size_hint:(1, None)
             valign: 'center'
             password: True
             text_size: root.width, root.height
-            height: '60dp'
+            height: '30dp'
             background_color: .4, .4, .4, .5
             cursor_color: 1, 1, 1, 1
             foreground_color: 1, 1, 1, 1
@@ -58,23 +82,26 @@
             use_bubble: True
             font_size: '16sp'
             multiline: False
+            write_tab: False
             bold: 1
-        BoxLayout:
-            padding:[(self.width-sign_in_btn.width)/2, 0, (self.width-sign_in_btn.width)/2, 0]
-            MDRaisedButton:
-                id: sign_in_btn
-                text: 'Sign In'
-                color: 0, 0, 0, 0
-                md_bg_color: 0, 0, 0, 1
-                on_press: root.login()
-        BoxLayout:
-            padding:[(self.width-reset_password_button.width)/2, 0, (self.width-reset_password_button.width)/2, 0]
-            MDRaisedButton:
-                id: reset_password_button
-                text: 'Forgot Password?'
-                color: 0, 0, 0, 0
-                md_bg_color: 0, 0, 0, 1
+            on_text_validate: root.login()
+        MDRaisedButton:
+            size_hint:(1, None)
+            valign: 'center'
+            id: sign_in_btn
+            text: 'Sign In'
+            color: 0, 0, 0, 0
+            md_bg_color: 0, 0, 0, 1
+            on_press: root.login()
+        MDRaisedButton:
+            size_hint:(1, None)
+            valign: 'center'
+            id: reset_password_button
+            text: 'Forgot Password?'
+            color: 0, 0, 0, 0
+            md_bg_color: 0, 0, 0, 1        
         Label:
+            valign: 'bottom'
             text: 'or sign up with'
             font_size: '18sp'
             color: 0, 0, 0, 1
