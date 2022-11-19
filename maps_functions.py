@@ -9,15 +9,15 @@ def create_map(center_point=(51.1102, 17.0350), zoom_start=12, width=800, height
 def save_map(map_object, file_name='map.html'):
     map_object.save(file_name)
 
-def add_market_to_map(map_object, marker_dict):
+def add_market_to_map(map_object, marker_object):
     # retrieve data from dictionary
-    latitude = marker_dict['latitude']
-    longitude = marker_dict['longitude']
-    marker_name = marker_dict['marker_name']
-    description = marker_dict['description']
-    user_name = marker_dict['user'][1]
-    category_id = marker_dict['category_id']
-    photo = marker_dict['photo']
+    latitude = marker_object.latitude
+    longitude = marker_object.longitude
+    marker_name = marker_object.marker_name
+    description = marker_object.description
+    user_name = marker_object.user_name
+    category_id = marker_object.category_id
+    photo = marker_object.photo
 
     # retrieve category details
     category_details = get_category_details(category_id)
@@ -39,8 +39,8 @@ def add_market_to_map(map_object, marker_dict):
     folium.Marker(location, popup=html_message, icon=icon, tooltip=marker_name).add_to(map_object)
     return map_object
 
-def load_markers():
-    markers = get_markers()
+def load_markers(user_id=None, categories_id: list = None):
+    markers = get_markers(user_id, categories_id)
     map_object = create_map()
     for marker in markers:
         add_market_to_map(map_object, marker)
