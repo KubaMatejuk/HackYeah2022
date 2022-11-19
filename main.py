@@ -6,12 +6,18 @@ from kivymd.app import MDApp
 
 
 class WindowManager(ScreenManager):
-    screen_one = ObjectProperty(None)
-    screen_two = ObjectProperty(None)
+    screen_login = ObjectProperty(None)
+    screen_mainmenu = ObjectProperty(None)
+    screen_map = ObjectProperty(None)
 
 
 class WasteOverMenu(Screen):
-    pass
+    def open_maps(self):
+        self.manager.current = 'mapScreen'
+
+
+class WasteOverMap(Screen):
+    map = ObjectProperty(None)
 
 
 class WasteOverLogInScreen(Screen):
@@ -19,8 +25,8 @@ class WasteOverLogInScreen(Screen):
         password = self.ids.password.text
         email = self.ids.email.text
         actual_password = get_password_for_user(email)
-        if password == actual_password:
-            self.manager.current = 'mainMenu'
+        #if password == actual_password:
+        self.manager.current = 'mainMenu'
 
 
 class WasteOverApp(MDApp):

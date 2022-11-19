@@ -1,11 +1,12 @@
 #:import Gradient kivy_gradient.Gradient
 #:import Vector kivy.vector.Vector
 #:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import MapView kivy_garden.mapview.MapView
 
 <WindowManager>:
     WasteOverLogInScreen:
     WasteOverMenu:
- 
+    WasteOverMap:
 
 <WasteOverLogInScreen>:
     name: 'logInScreen'
@@ -120,19 +121,42 @@
 
 <WasteOverMenu>:
     name: 'mainMenu'
+    MDRaisedButton:
+        id: sign_in_btn
+        text: 'Maps'
+        color: 0, 0, 0, 0
+        md_bg_color: 0, 0, 0, 1
+        on_press: root.open_maps()
+
+
+<WasteOverMap>:
+    map: map_ui
+    name: 'mapScreen'
+    MapView:
+        id: map_ui
+        lat: 51.11027336343235
+        lon: 17.027433148736037
+        zoom: 15
+
 
 <Manager>:
     id: screen_manager
 
-    screen_one: login_screen
-    screen_two: mainMenu
+    screen_login: loginScreen
+    screen_mainmenu: mainMenu
+    screen_map: mapScreen
 
     ScreenOne:
-        id: login_screen
-        name: "login_screen"
+        id: loginScreen
+        name: "loginScreen"
         manager: screen_manager
 
     ScreenTwo:
         id: mainMenu
         name: "mainMenu"
+        manager: screen_manager
+
+    ScreenThree:
+        id: mapScreen 
+        name: 'mapScreen'
         manager: screen_manager
