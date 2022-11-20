@@ -257,7 +257,7 @@
     titleLabel: titleLabel
     category_text: category_text
     size_hint: None, None
-    size: 200, 200
+    size: 200, 350
     canvas.before:
         Color:
             rgba: (1,1,1,1)
@@ -291,6 +291,16 @@
                 text: "Category"
                 bold: True
                 color: (0,0,1,1)
+        BoxLayout:
+            height: gif.height
+            padding: [(self.width-gif.width)/2, 0, (self.width-gif.width)/2, self.height-gif.height]
+            Image:
+                id: gif
+                source: 'telewizor.jpg'
+                center: self.parent.center
+                size_hint: None, None
+                size: 150, 150
+                allow_stretch: True
         Label:
             id: message
             text: "test"
@@ -298,7 +308,7 @@
             background_color: 1, 0, 0, 1
             halign: "center"
             markup: True
-            font_size: root.height / 15
+            font_size: root.height / 30
             text_size: self.width, None
 
 <WasteOverBarReader>:
