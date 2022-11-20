@@ -217,27 +217,36 @@
                 pos: [0,0]
                 size: 2*self.width, 2*self.height
                 texture: Gradient.horizontal(get_color_from_hex("FFD700"), get_color_from_hex("39CE00"))
-        BoxLayout:
-            padding: ['100dp', 0, 0, 0]
-            MDLabel:
-                id: bar_text
-                top: root.top - 50
-                valign: 'middle'
-                text: 'Bar Reader Screen'
-                bold: True
-                font_name: 'game_over'
-                font_size: '90sp'
-                size_hint: None, None
-                height: '100dp'
-                width: '320dp'
-            MDRaisedButton:
-                id: back_btn
-                text: 'back'
-                icon: 'undo'
-                text_color: 'red'
-                font_size: 30
-                md_bg_color: 0.5, 0, 0, 0.7
-                on_press: root.back()
+        GridLayout:
+            size_hint: 1, None
+            height: self.minimum_height
+            cols: 2
+            AnchorLayout:
+                size_hint_y: None
+                height: back_btn.height
+                padding: [0, 0, self.width-bar_text.width, self.height-bar_text.height]
+                MDLabel:
+                    id: bar_text
+                    top: root.top - 50
+                    valign: 'middle'
+                    text: 'Bar Reader Screen'
+                    bold: True
+                    font_name: 'game_over'
+                    font_size: '60sp'
+                    size_hint: None, None
+                    height: '100dp'
+                    width: '320dp'
+            AnchorLayout:
+                size_hint_y: None
+                height: back_btn.height
+                padding: [self.width-back_btn.width, 0, 0, self.height-back_btn.height]
+                MDIconButton:
+                    id: back_btn
+                    icon: "skip-backward"
+                    elevation_normal: 12
+                    user_font_size: "30sp"
+                    md_bg_color: 0.25, 0.25, 0.25, 0.5
+                    on_press: root.back()
 
 
 <WasteOverSecondLife>:
@@ -254,19 +263,37 @@
                 pos: [0,0]
                 size: 2*self.width, 2*self.height
                 texture: Gradient.horizontal(get_color_from_hex("FFD700"), get_color_from_hex("39CE00"))
-        BoxLayout:
-            padding: ['50dp', 0, 0, 0]
-            MDLabel:
-                id: second_life_text
-                top: root.top - 50
-                valign: 'middle'
-                text: 'Second Life Screen'
-                bold: True
-                font_name: 'game_over'
-                font_size: '50sp'
-                size_hint: None, None
-                height: '100dp'
-                width: '450dp'
+        GridLayout:
+            size_hint: 1, None
+            height: self.minimum_height
+            cols: 2
+            AnchorLayout:
+                size_hint_y: None
+                height: second_life_text.height
+                padding: [0, 0, self.width-second_life_text.width, self.height-second_life_text.height]
+                MDLabel:
+                    id: second_life_text
+                    top: root.top - 50
+                    valign: 'middle'
+                    text: 'Second Life Screen'
+                    bold: True
+                    font_name: 'game_over'
+                    font_size: '60sp'
+                    size_hint: None, None
+                    height: '100dp'
+                    width: '320dp'
+            AnchorLayout:
+                size_hint_y: None
+                height: back_btn.height
+                padding: [self.width-back_btn.width, 0, 0, self.height-back_btn.height]
+                MDIconButton:
+                    id: back_btn
+                    icon: "skip-backward"
+                    elevation_normal: 12
+                    user_font_size: "30sp"
+                    md_bg_color: 0.25, 0.25, 0.25, 0.5
+                    on_press: root.back()
+
 
 
 <Manager>:

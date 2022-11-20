@@ -89,6 +89,8 @@ class WasteOverBarReader(Screen):
 
 class WasteOverSecondLife(Screen):
     second_life = ObjectProperty(None)
+    def back(self):
+        self.manager.current = 'mainMenu'
 
 
 class WasteOverLogInScreen(Screen):
