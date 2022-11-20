@@ -217,6 +217,20 @@
                 pos: [0,0]
                 size: 2*self.width, 2*self.height
                 texture: Gradient.horizontal(get_color_from_hex("FFD700"), get_color_from_hex("39CE00"))
+        BoxLayout:
+            padding: ['100dp', 0, 0, 0]
+            MDLabel:
+                id: bar_text
+                top: root.top - 50
+                valign: 'middle'
+                text: 'Bar Reader Screen'
+                bold: True
+                font_name: 'game_over'
+                font_size: '90sp'
+                size_hint: None, None
+                height: '100dp'
+                width: '320dp'
+
 
 <WasteOverSecondLife>:
     name: 'secondLifeScreen'
@@ -232,6 +246,19 @@
                 pos: [0,0]
                 size: 2*self.width, 2*self.height
                 texture: Gradient.horizontal(get_color_from_hex("FFD700"), get_color_from_hex("39CE00"))
+        BoxLayout:
+            padding: ['50dp', 0, 0, 0]
+            MDLabel:
+                id: second_life_text
+                top: root.top - 50
+                valign: 'middle'
+                text: 'Second Life Screen'
+                bold: True
+                font_name: 'game_over'
+                font_size: '50sp'
+                size_hint: None, None
+                height: '100dp'
+                width: '450dp'
 
 
 <Manager>:
