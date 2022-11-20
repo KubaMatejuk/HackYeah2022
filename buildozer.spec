@@ -26,7 +26,7 @@ source.include_exts = py,png,jpg,kv,atlas
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
-#source.exclude_patterns = license,images/*/*.jpg
+#source.exclude_patterns = license,images/*/*.jpg,maps_functions
 
 # (str) Application versioning (method 1)
 version = 0.1
@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy==2.1.0,kivymd==1.1.1,pillow,kivy_garden.mapview,mysql,webbrowser,folium
+requirements = python3,kivy==2.1.0,kivymd==1.1.1,pillow,kivy_garden.mapview,mysql
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes

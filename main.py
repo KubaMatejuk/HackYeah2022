@@ -99,10 +99,15 @@ class MarkerPopUp(Popup):
 
 
 class WasteOverBarReader(Screen):
-    bat = ObjectProperty(None)
+    bar = ObjectProperty(None)
+
+    def back(self):
+        self.manager.current = 'mainMenu'
 
 class WasteOverSecondLife(Screen):
     second_life = ObjectProperty(None)
+    def back(self):
+        self.manager.current = 'mainMenu'
 
 
 class WasteOverLogInScreen(Screen):
