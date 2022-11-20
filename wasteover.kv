@@ -173,8 +173,17 @@
                 user_font_size: "30sp"
                 md_bg_color: 0.25, 0.25, 0.25, 0.5
                 on_press: root.back()
-        # Image:
-        #    source: 'sign-arrows.gif'
+        AnchorLayout:
+            height: gif.height
+            padding: [(self.width-gif.width)/2, 0, (self.width-gif.width)/2, self.height-gif.height]
+            Image:
+                id: gif
+                source: 'sign-arrows.gif'
+                center: self.parent.center
+                size_hint: None, None
+                size: 250, 250
+                allow_stretch: True
+
 
         MDLabel:
             id: main_menu_label
