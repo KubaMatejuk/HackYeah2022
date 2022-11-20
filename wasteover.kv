@@ -203,6 +203,22 @@
         lon: 17.027433148736037
         zoom: 15
 
+<MarkerPopUp>:
+    id: marker_pop_up
+    message: message
+    wrapped_button: wrapped_button
+    BoxLayout:
+        Label:
+            id: message
+            text: "test"
+            background_color: 1, 0, 0, 1
+            halign: "center"
+            markup: True
+        Button:
+            id: wrapped_button
+            text: "Close"
+            on_press: root.dismiss()
+
 <WasteOverBarReader>:
     name: 'barScreen'
     BoxLayout:

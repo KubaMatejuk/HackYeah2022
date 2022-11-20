@@ -70,16 +70,33 @@ class WasteOverMap(Screen):
         # marker_widget.add_widget(Label(text=marker.marker_name + '\n'
         #                                + str(marker.description) + '\n'
         #                                + 'Added by: ' + marker.user_name, color= [0, 0, 0]))
-        marker_widget.add_widget(Popup(title=marker.marker_name,
-                                       content=Label(text=marker.marker_name + '\n'
-                                                          + str(marker.description) + '\n'
-                                                          + 'Added by: ' + marker.user_name),
-                                       size_hint=(None, None), size=(200, 200)))
+        # marker_widget.add_widget(Popup(title=marker.marker_name,
+        #                                content=Label(text=marker.marker_name + '\n'
+        #                                                   + str(marker.description) + '\n'
+        #                                                   + 'Added by: ' + marker.user_name),
+        #                                size_hint=(None, None), size=(200, 200)))
+        marker_widget.add_widget(MarkerPopUp(marker.marker_name,
+                                             marker.description))
 
         self.map.add_widget(marker_widget)
 
     def on_enter(self, *args):
         self.load_markers()
+
+class MarkerPopUp(Popup):
+    message = ObjectProperty()
+    wrapped_button = ObjectProperty()
+    # wrapped_button = ObjectProperty()
+    def __init__(self, title, text, **kwargs):
+        super(MarkerPopUp, self).__init__(**kwargs)
+
+        self.title = title
+        if text:
+            self.message.text = text
+        else:
+            self.message.text = ''
+
+
 
 class WasteOverBarReader(Screen):
     bat = ObjectProperty(None)
