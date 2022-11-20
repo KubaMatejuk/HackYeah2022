@@ -240,10 +240,16 @@
 
 <MarkerPopUp>:
     id: marker_pop_up
-    message: message
-    wrapped_button: wrapped_button
+    message: message    
     size_hint: None, None
     size: 200, 200
+    canvas.before:
+        Color:
+            rgba: (0,0,0,1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [(40, 40), (40, 40), (20, 20), (20, 20)]
     BoxLayout:
         orientation: "vertical"
         Label:
@@ -254,13 +260,6 @@
             markup: True
             font_size: root.height / 15
             text_size: self.width, None
-        Button:
-            id: wrapped_button
-            text: "Close"
-            size_hint: None, None
-            size: 175, 30
-            on_release: print(root)
-
 <WasteOverBarReader>:
     name: 'barScreen'
     BoxLayout:

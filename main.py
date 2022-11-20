@@ -68,14 +68,6 @@ class WasteOverMap(Screen):
 
     def add_marker_to_map(self, marker):
         marker_widget = MapMarkerPopup(lat=marker.latitude, lon=marker.longitude)
-        # marker_widget.add_widget(Label(text=marker.marker_name + '\n'
-        #                                + str(marker.description) + '\n'
-        #                                + 'Added by: ' + marker.user_name, color= [0, 0, 0]))
-        # marker_widget.add_widget(Popup(title=marker.marker_name,
-        #                                content=Label(text=marker.marker_name + '\n'
-        #                                                   + str(marker.description) + '\n'
-        #                                                   + 'Added by: ' + marker.user_name),
-        #                                size_hint=(None, None), size=(200, 200)))
         pop_up = MarkerPopUp(marker.marker_name,marker.description, marker.user_name)
         marker_widget.add_widget(pop_up)
 
@@ -84,9 +76,8 @@ class WasteOverMap(Screen):
     def on_enter(self, *args):
         self.load_markers()
 
-class MarkerPopUp(Popup):
+class MarkerPopUp(BoxLayout):
     message = ObjectProperty()
-    wrapped_button = ObjectProperty()
     def __init__(self, title, text, username, **kwargs):
         super(MarkerPopUp, self).__init__(**kwargs)
 
