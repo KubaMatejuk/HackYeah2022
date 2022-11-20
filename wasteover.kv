@@ -207,17 +207,24 @@
     id: marker_pop_up
     message: message
     wrapped_button: wrapped_button
+    size_hint: None, None
+    size: 200, 200
     BoxLayout:
+        orientation: "vertical"
         Label:
             id: message
             text: "test"
             background_color: 1, 0, 0, 1
             halign: "center"
             markup: True
+            font_size: root.height / 15
+            text_size: self.width, None
         Button:
             id: wrapped_button
             text: "Close"
-            on_press: root.dismiss()
+            size_hint: None, None
+            size: 175, 30
+            on_release: print(root)
 
 <WasteOverBarReader>:
     name: 'barScreen'
