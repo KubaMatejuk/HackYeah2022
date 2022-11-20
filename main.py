@@ -7,6 +7,7 @@ from kivy.properties import ObjectProperty
 from kivy.core.window import Window
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.core.image import Image as CoreImage
 from db_actions import get_password_for_user
 
 from object_handler import get_markers
