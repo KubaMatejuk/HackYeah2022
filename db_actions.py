@@ -2,6 +2,7 @@
 import mysql.connector
 from class_marker import Marker
 from class_user import User
+import datetime
 
 
 # DB GENERIC FUNCTIONS
@@ -58,15 +59,17 @@ def add_marker_to_db(marker):
     new_marker_id = None
     sql_command = "INSERT INTO `markers` " \
                   "(`marker_id`, `user_id`, `marker_name`, `description`, " \
-                  "`marker_category_id`, `latitude`, `longitude`) " \
+                  "`marker_category_id`, `latitude`, `longitude`, `addition_datetime`) " \
                   "VALUES " \
-                  "(NULL, '{0}', '{1}', '{2}', '{3}', '{4}', '{5}');".format(
+                  "(NULL, '{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}');".format(
                     marker.user_id,
                     marker.marker_name,
                     marker.description,
                     marker.category_id,
                     marker.latitude,
-                    marker.longitude)
+                    marker.longitude,
+                    datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     try:
         mydb = db_connect()
         new_marker_id = run_sql_command(mydb, sql_command)
@@ -182,6 +185,7 @@ def get_categories_data() -> list:
 #                      category_id=3, photo=None, latitude=51.1270, longitude=17.1669,
 #                      user=test_user)
 #
-# test_marker2 = Marker(marker_id=19, marker_name='Laptop Apple', description='Roczny laptop',
-#                      category_id=3, photo=None, latitude=51.1270, longitude=17.1669,
+# test_marker2 = Marker(marker_name='Laptop Kuby', description='Roczny laptop',
+#                      category_id=5, photo=None, latitude=51.12702, longitude=17.16691,
 #                      user=test_user)
+

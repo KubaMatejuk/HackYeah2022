@@ -48,7 +48,7 @@ def get_markers(user_id=None, categories_id: list = None) -> list:
     for marker_tuple in get_markers_tuple(user_id, categories_id):
         marker = Marker(marker_id=marker_tuple[0], marker_name=marker_tuple[2], description=marker_tuple[3],
                         category_id=marker_tuple[4], photo=None, latitude=marker_tuple[5], longitude=marker_tuple[6],
-                        user=get_user(marker_tuple[1]))
+                        user=get_user(marker_tuple[1]), addtion_datetime=marker_tuple[7], updated_datetime=marker_tuple[8])
         markers_list.append(marker)
     return markers_list
 
