@@ -254,12 +254,13 @@
 <MarkerPopUp>:
     id: marker_pop_up
     message: message
-    titleLabel: titlaLabel
+    titleLabel: titleLabel
+    category_text: category_text
     size_hint: None, None
     size: 200, 200
     canvas.before:
         Color:
-            rgba: (0,0,0,1)
+            rgba: (1,1,1,1)
         RoundedRectangle:
             pos: self.pos
             size: self.size
@@ -267,17 +268,33 @@
     BoxLayout:
         orientation: "vertical"
         Label:
-            id: titlaLabel
+            id: titleLabel
             text: "title"
             bold: True
+            color: (0,0,0,1)
             background_color: 1, 0, 0, 1
             halign: "center"
             markup: True
             font_size: root.height / 15
             text_size: self.width, None
+        BoxLayout:
+            id: category_box
+            size_hint: None, None
+            height: 15
+            width: root.width
+            padding: ['0dp', '5dp', '0dp', '5dp']
+            spacing: '5dp'
+            orientation:'vertical'
+
+            Label:
+                id: category_text
+                text: "Category"
+                bold: True
+                color: (0,0,1,1)
         Label:
             id: message
             text: "test"
+            color: (0,0,0,1)
             background_color: 1, 0, 0, 1
             halign: "center"
             markup: True

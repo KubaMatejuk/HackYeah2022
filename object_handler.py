@@ -6,6 +6,15 @@ from db_actions import get_markers_tuple, add_user_to_db, get_categories_data, g
 CATEGORIES_CACHE = []
 USERS_CACHE = []
 
+COLORS_DICT = {
+    'gray': (0.4,0.4,0.4,1),
+    'orange': (1,0.8,0,1),
+    'beige': (0.6,0.4,0.01,1),
+    'lightblue': (0,1,0.8,1),
+    'purple': (1,0.1,0.9),
+    'blue': (0,0,1,1)
+}
+
 
 def get_category(category_id: int) -> MarkerCategory:
     category_details_tuple = None
