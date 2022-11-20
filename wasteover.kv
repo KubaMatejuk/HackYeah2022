@@ -237,10 +237,24 @@
         lat: 51.11027336343235
         lon: 17.027433148736037
         zoom: 15
+    AnchorLayout:
+        size_hint_y: None
+        height: back_btn.height
+        padding: [self.width-back_btn.width, '5dp', '5dp', self.height-back_btn.height]
+        MDIconButton:
+            id: back_btn
+            icon: "skip-backward"
+            elevation_normal: 12
+            user_font_size: "30sp"
+            md_bg_color: 0.25, 0.25, 0.25, 0.5
+            on_press: root.back()
+
+
 
 <MarkerPopUp>:
     id: marker_pop_up
-    message: message    
+    message: message
+    titleLabel: titlaLabel
     size_hint: None, None
     size: 200, 200
     canvas.before:
@@ -253,6 +267,15 @@
     BoxLayout:
         orientation: "vertical"
         Label:
+            id: titlaLabel
+            text: "title"
+            bold: True
+            background_color: 1, 0, 0, 1
+            halign: "center"
+            markup: True
+            font_size: root.height / 15
+            text_size: self.width, None
+        Label:
             id: message
             text: "test"
             background_color: 1, 0, 0, 1
@@ -260,6 +283,7 @@
             markup: True
             font_size: root.height / 15
             text_size: self.width, None
+
 <WasteOverBarReader>:
     name: 'barScreen'
     BoxLayout:

@@ -79,12 +79,16 @@ class WasteOverMap(Screen):
     def on_enter(self, *args):
         self.load_markers()
 
+    def back(self):
+        self.manager.current = 'mainMenu'
+
 class MarkerPopUp(BoxLayout):
     message = ObjectProperty()
+    titleLabel = ObjectProperty()
     def __init__(self, title, text, username, **kwargs):
         super(MarkerPopUp, self).__init__(**kwargs)
 
-        self.title = title
+        self.titleLabel.text = title
         if text:
             self.message.text = text + '\n\n' + 'Added by: ' + username
         else:
