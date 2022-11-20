@@ -9,7 +9,9 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.graphics import Color, Rectangle, RoundedRectangle
 from kivy.core.image import Image
-from db_actions import get_password_for_user
+from db_actions import get_password_for_user, add_marker_to_db
+from class_marker import Marker
+from class_user import User
 
 from object_handler import get_markers, get_category, COLORS_DICT
 from kivymd.app import MDApp
@@ -43,10 +45,14 @@ class WasteOverMap(Screen):
     placed = False
     exists = False
     marker = False
+    block_adding_new_marker = False
 
-    def place_pin(self):
-        self.placed = True
-        pass
+    def place_pin(self, txt_input):
+        item_name = txt_input.text
+        test_user = User(user_id=3, username='kubam')
+        marker = Marker(item_name, self.lat, self.lon, 'Test Item', test_user, 6)
+        add_marker_to_db(marker)
+        self.block_adding_new_marker = False
 
     def remove_pin(self):
         if self.exists:
@@ -56,14 +62,16 @@ class WasteOverMap(Screen):
         pass
 
     def on_touch_up(self, touch):
-        if touch.y > self.height * 0.05:
-            if self.placed == True and self.exists == False:
-                self.marker = MapMarkerPopup(lat=self.map.get_latlon_at(touch.x, touch.y)[0],
-                                             lon=self.map.get_latlon_at(touch.x, touch.y)[1])
-                self.marker.add_widget(TextInput(text="TEST"))
-                self.map.add_widget(self.marker)
-                self.exists = True
-                print(self.map.get_latlon_at(touch.x, touch.y))
+        if touch.y > self.height * 0.05 and not self.block_adding_new_marker:
+            marker = MapMarkerPopup(lat=self.map.get_latlon_at(touch.x, touch.y)[0],
+                                            lon=self.map.get_latlon_at(touch.x, touch.y)[1])
+            txt_input = TextInput(text_size=(self.width, self.height), multiline=False, hint_text='Provide short description', on_text_validate=self.place_pin)
+            marker.add_widget(txt_input)
+            self.map.add_widget(marker)
+            self.exists = True
+            self.lat = self.map.get_latlon_at(touch.x, touch.y)[0]
+            self.lon = self.map.get_latlon_at(touch.x, touch.y)[1]
+            self.block_adding_new_marker = True
 
     def load_markers(self):
         markers_list = get_markers()
@@ -136,8 +144,6 @@ class WasteOverLogInScreen(Screen):
         
 
 class WasteOverApp(MDApp):
-    Window.size = (450, 700)
-
     def build(self):
         m = WindowManager(transition=NoTransition())
         return m
