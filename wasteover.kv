@@ -168,17 +168,17 @@
             padding: [self.width-logout_btn.width, 0, 0, self.height-logout_btn.height]
             MDIconButton:
                 id: logout_btn
-                icon: "skip-backward"
+                icon: "logout"
                 elevation_normal: 12
                 user_font_size: "30sp"
                 md_bg_color: 0.25, 0.25, 0.25, 0.5
-                on_press: root.back()
+                on_press: root.logout()
         AnchorLayout:
             height: gif.height
             padding: [(self.width-gif.width)/2, 0, (self.width-gif.width)/2, self.height-gif.height]
             Image:
                 id: gif
-                source: 'sign-arrows.gif'
+                source: 'recycle.png'
                 center: self.parent.center
                 size_hint: None, None
                 size: 250, 250

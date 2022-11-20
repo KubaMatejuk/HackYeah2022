@@ -33,6 +33,9 @@ class WasteOverMenu(Screen):
     def open_second_life(self):
         self.manager.current = 'secondLifeScreen'
 
+    def logout(self):
+        self.manager.current = 'logInScreen'
+
 
 class WasteOverMap(Screen):
     map = ObjectProperty(None)
