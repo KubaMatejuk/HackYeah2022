@@ -102,7 +102,7 @@ class MarkerPopUp(BoxLayout):
 
         self.titleLabel.text = title
         if text:
-            self.message.text = text + '\n\n' + 'Added by: ' + username
+            self.message.text = 'Description:\n' + text + '\n\n' + 'Added by: ' + username
         else:
             self.message.text = 'Added by: ' + username
         self.category_text.text = 'Category: ' + category_name
