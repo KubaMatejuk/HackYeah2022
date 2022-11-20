@@ -52,13 +52,12 @@ class WasteOverMap(Screen):
 
     def on_touch_up(self, touch):
         if touch.y > self.height * 0.05:
-            if self.placed == True and self.exists == False:
-                self.marker = MapMarkerPopup(lat=self.map.get_latlon_at(touch.x, touch.y)[0],
-                                             lon=self.map.get_latlon_at(touch.x, touch.y)[1])
-                self.marker.add_widget(TextInput(text="TEST"))
-                self.map.add_widget(self.marker)
-                self.exists = True
-                print(self.map.get_latlon_at(touch.x, touch.y))
+            self.marker = MapMarkerPopup(lat=self.map.get_latlon_at(touch.x, touch.y)[0],
+                                            lon=self.map.get_latlon_at(touch.x, touch.y)[1])
+            self.marker.add_widget(TextInput(text="TEST"))
+            self.map.add_widget(self.marker)
+            self.exists = True
+            print(self.map.get_latlon_at(touch.x, touch.y))
 
     def load_markers(self):
         markers_list = get_markers()
