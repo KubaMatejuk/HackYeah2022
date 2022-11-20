@@ -7,6 +7,7 @@ from kivy.properties import ObjectProperty
 from kivy.core.window import Window
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.core.image import Image
 from db_actions import get_password_for_user
 
 from object_handler import get_markers
@@ -31,6 +32,9 @@ class WasteOverMenu(Screen):
 
     def open_second_life(self):
         self.manager.current = 'secondLifeScreen'
+
+    def logout(self):
+        self.manager.current = 'logInScreen'
 
 
 class WasteOverMap(Screen):
